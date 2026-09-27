@@ -2,11 +2,9 @@
 
 Demo de página web para una marca de ropa urbana. Santiago Prendas es una marca ficticia creada para mostrar el tipo de sitio que desarrollo para negocios locales.
 
-**Ver demo:** https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/
+**Ver demo:** https://github.com/Santiago3336/Santiago_Clothes
 
-<!-- Cuando subas una captura de pantalla con el nombre captura.png, borra estas marcas de comentario:
-![Captura de la página](captura.png)
--->
+![alt text](visual.png)
 
 ## Qué incluye
 
@@ -26,7 +24,7 @@ HTML, CSS y JavaScript, sin frameworks ni dependencias. Todo el sitio está en u
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/TU-USUARIO/NOMBRE-DEL-REPO.git
+   git clone https://github.com/Santiago3336/Santiago_Clothes.git
    ```
 2. Abre `index.html` en el navegador.
 
@@ -44,5 +42,5 @@ En la versión para un cliente, los botones de ejemplo se conectan al WhatsApp, 
 
 Desarrollado por Santiago.
 
-- GitHub: [TU-USUARIO](https://github.com/TU-USUARIO)
-- ¿Quieres una página así para tu negocio? Escríbeme por [WhatsApp](https://wa.me/57XXXXXXXXXX).
+- GitHub: [TU-USUARIO](https://github.com/Santiago3336)
+- ¿Quieres una página así para tu negocio? Escríbeme por [WhatsApp](https://wa.me/573155140200).
