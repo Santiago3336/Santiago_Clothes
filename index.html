@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Santiago Prendas | Ropa urbana en Bucaramanga (demo)</title>
+<meta name="description" content="Demo de página web para una marca de ropa. Diseño y desarrollo: Santiago.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231D3FD6'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' font-family='Arial Black,Arial' font-weight='900' fill='%23FFCE2E'%3ESP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1D3FD6;
+    --amarillo:#FFCE2E;
+    --tinta:#0E1633;
+    --blanco:#F5F6F8;
+    --carton:#D8B88A;
+    --celeste:#E3E8FB;
+    --papel:#EFE3CE;
+    --wa:#1C9E50;
+    --barra:40px;
+    --nav:68px;
+    --display:"Big Shoulders Display","Arial Narrow","Roboto Condensed",Impact,sans-serif;
+    --texto:"Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --ancho:1240px;
+    color-scheme:light;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--barra) + var(--nav) + 12px)}
+  body{margin:0;font-family:var(--texto);font-size:17px;line-height:1.55;color:var(--tinta);background:var(--blanco);-webkit-font-smoothing:antialiased}
+  img,svg{display:block;max-width:100%}
+  a{color:inherit}
+  button{font:inherit;color:inherit;cursor:pointer}
+  :focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+  .hero :focus-visible,.pie :focus-visible,.demo-barra :focus-visible{outline-color:var(--amarillo)}
+  .contenedor{width:min(100% - 40px,var(--ancho));margin-inline:auto}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* Botones */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;border:2px solid transparent;font-weight:600;font-size:16px;line-height:1;text-decoration:none;transition:transform .2s,background-color .2s,color .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn svg{flex-shrink:0}
+  .btn-amarillo{background:var(--amarillo);color:var(--tinta)}
+  .btn-linea{border-color:currentColor;background:transparent}
+  .btn-tinta{background:var(--tinta);color:#fff}
+  .btn-azul{background:var(--azul);color:#fff}
+
+  /* Barra de demo (separada de la marca a propósito) */
+  .demo-barra{position:fixed;inset:0 0 auto 0;height:var(--barra);z-index:60;background:var(--tinta);color:#fff;font-size:14px;display:flex;align-items:center}
+  .demo-barra .contenedor{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .demo-barra p{margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .demo-barra strong{color:var(--amarillo);font-weight:600}
+  .demo-links{display:flex;gap:6px;flex-shrink:0}
+  .demo-links a{text-decoration:none;padding:3px 12px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-weight:500;transition:background-color .2s,color .2s}
+  .demo-links a:hover{background:#fff;color:var(--tinta)}
+  .corto{display:none}
+
+  /* Cabecera */
+  .cabecera{position:fixed;top:var(--barra);left:0;right:0;height:var(--nav);z-index:50;color:#fff;transition:background-color .3s,color .3s,box-shadow .3s}
+  .cabecera .contenedor{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .cabecera.solida,.cabecera.menu-abierto{background:var(--blanco);color:var(--tinta);box-shadow:0 1px 0 rgba(14,22,51,.12)}
+  .logo{font-family:var(--display);font-weight:900;font-size:26px;letter-spacing:.03em;text-transform:uppercase;text-decoration:none;line-height:1}
+  .nav{display:flex;align-items:center;gap:28px}
+  .nav a:not(.btn){text-decoration:none;font-weight:500;position:relative}
+  .nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+  .nav a:not(.btn):hover::after{transform:scaleX(1)}
+  .btn-nav{min-height:40px;padding:0 18px;font-size:15px;background:var(--amarillo);color:var(--tinta)}
+  .cabecera.solida .btn-nav,.cabecera.menu-abierto .btn-nav{background:var(--tinta);color:#fff}
+  .menu-btn{display:none;align-items:center;background:none;border:2px solid currentColor;border-radius:999px;padding:6px 16px;font-weight:600;font-size:15px}
+
+  /* Hero con perchero */
+  .hero{position:relative;background:var(--azul);color:#fff;min-height:100vh;min-height:100svh;padding-top:calc(var(--barra) + var(--nav));display:flex;flex-direction:column;overflow:hidden}
+  .perchero{position:relative;flex:1 1 auto;min-height:clamp(230px,44vh,440px);margin-top:clamp(10px,3vh,32px)}
+  .varilla{position:absolute;top:0;left:-10px;right:-10px;height:10px;background:var(--carton);border-bottom:3px solid #A8865A}
+  .prendas{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-evenly;padding-inline:2%}
+  .percha{flex:0 0 auto;width:clamp(112px,16.5vw,250px);animation:caer .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d)}
+  .percha-giro{transform-origin:50% 2.4%}
+  .percha-giro.mecer{animation:mecer 2.2s cubic-bezier(.36,.07,.19,.97) both;animation-delay:calc(var(--d) + .45s)}
+  .percha svg{width:100%;height:auto;overflow:visible}
+  @keyframes caer{from{transform:translateY(-36px);opacity:0}to{transform:none;opacity:1}}
+  @keyframes mecer{0%{transform:rotate(0)}18%{transform:rotate(7deg)}40%{transform:rotate(-5deg)}62%{transform:rotate(3deg)}82%{transform:rotate(-1.2deg)}100%{transform:rotate(0)}}
+  .hero-texto{position:relative;z-index:2;padding-bottom:clamp(28px,6vh,64px)}
+  .marca-grande{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(64px,11.6vw,196px);line-height:.84;letter-spacing:-.005em;color:var(--amarillo);margin:0 0 22px}
+  .hero-fila{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px}
+  .hero-fila p{margin:0;max-width:34ch;font-size:clamp(17px,1.6vw,20px)}
+  .hero-acciones{display:flex;flex-wrap:wrap;gap:12px}
+
+  /* Secciones */
+  .seccion{padding-block:clamp(72px,10vw,128px)}
+  .titulo{font-family:var(--display);font-weight:800;font-size:clamp(44px,6.4vw,84px);line-height:.92;margin:0}
+
+  /* Colección */
+  .coleccion-cabeza{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px 40px;margin-bottom:32px}
+  .coleccion-cabeza p{margin:0;max-width:44ch;color:rgba(14,22,51,.78)}
+  .filtros{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;margin-bottom:28px;scrollbar-width:none}
+  .filtros::-webkit-scrollbar{display:none}
+  .filtro{flex-shrink:0;border:2px solid var(--tinta);background:transparent;border-radius:999px;padding:8px 18px;font-weight:600;font-size:15px;transition:background-color .2s,color .2s}
+  .filtro:hover{background:rgba(14,22,51,.08)}
+  .filtro[aria-pressed="true"]{background:var(--tinta);color:#fff}
+  .grilla{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 28px}
+  .producto[hidden]{display:none}
+  .grilla.preparada .producto{opacity:0;transform:translateY(28px)}
+  .grilla.preparada .producto.visible{opacity:1;transform:none;transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--c) * 90ms)}
+  .producto.entra{animation:entra .45s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes entra{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  .panel{position:relative;aspect-ratio:4/5;background:var(--fondo);border-radius:6px;overflow:hidden;display:grid;place-items:center}
+  .panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .ilustracion{width:64%;height:auto;margin-top:8%;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+  .producto:hover .ilustracion{transform:translateY(-6px) rotate(-2deg)}
+
+  .etiqueta{position:absolute;top:0;right:20px;width:132px;transform:rotate(-4deg);transform-origin:50% 0;z-index:2}
+  .producto:hover .etiqueta,.producto:focus-within .etiqueta{animation:mecer-etiqueta 1.3s ease-in-out}
+  @keyframes mecer-etiqueta{0%{transform:rotate(-4deg)}25%{transform:rotate(7deg)}50%{transform:rotate(-8deg)}75%{transform:rotate(-1deg)}100%{transform:rotate(-4deg)}}
+  .cuerda{position:absolute;left:50%;top:0;width:2px;height:38px;margin-left:-1px;background:var(--tinta);z-index:2}
+  .etiqueta-cuerpo{position:relative;display:block;margin-top:24px;padding:26px 14px 14px;background:var(--carton);color:var(--tinta);clip-path:polygon(20% 0,80% 0,100% 16%,100% 100%,0 100%,0 16%)}
+  .etiqueta-cuerpo::before{content:"";position:absolute;top:9px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:var(--fondo);box-shadow:inset 0 0 0 1.5px rgba(14,22,51,.35)}
+  .etiqueta-nombre{display:block;font-size:13px;font-weight:600;line-height:1.2}
+  .etiqueta-precio{display:block;font-family:var(--display);font-weight:800;font-size:27px;line-height:1;margin-top:6px}
+
+  .producto-info{padding-top:16px}
+  .producto-desc{margin:0 0 14px;color:rgba(14,22,51,.78);font-size:16px;min-height:3em}
+  .tallas{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .tallas-label{font-size:14px;color:rgba(14,22,51,.7);margin-right:4px}
+  .talla{position:relative}
+  .talla input{position:absolute;opacity:0;width:1px;height:1px}
+  .talla span{display:grid;place-items:center;min-width:42px;height:40px;padding:0 10px;border:1.5px solid rgba(14,22,51,.25);border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:border-color .2s,background-color .2s,color .2s}
+  .talla span:hover{border-color:var(--tinta)}
+  .talla input:checked+span{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+  .talla input:focus-visible+span{outline:3px solid var(--azul);outline-offset:2px}
+  .pedir{min-height:48px;padding:0 22px;font-size:15px}
+
+  /* La marca */
+  .marca{background:var(--amarillo)}
+  .marca-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px 64px;align-items:end}
+  .marca .titulo{font-size:clamp(50px,7.6vw,112px);line-height:.88}
+  .marca-texto p{font-size:clamp(18px,1.5vw,21px);max-width:40ch;margin:0 0 1em}
+  .garantias{list-style:none;margin:28px 0 0;padding:0;border-top:2px solid var(--tinta)}
+  .garantias li{padding:14px 0 14px 30px;border-bottom:1px solid rgba(14,22,51,.3);position:relative;font-weight:500}
+  .garantias li::before{content:"";position:absolute;left:2px;top:19px;width:14px;height:18px;background:var(--tinta);clip-path:polygon(22% 0,78% 0,100% 20%,100% 100%,0 100%,0 20%)}
+
+  /* Visítanos */
+  .visita-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:40px 56px;align-items:stretch}
+  .direccion{font-size:20px;font-weight:500;margin:20px 0 22px;font-style:normal;line-height:1.45}
+  .estado{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:6px 14px;border-radius:999px;background:var(--celeste);margin-bottom:22px}
+  .estado::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+  .estado.abierto{background:#DCF3E4;color:#11723A}
+  .estado.cerrado{background:#F7E0DC;color:#A42E1C}
+  .horario{width:100%;max-width:440px;border-collapse:collapse;margin-bottom:28px}
+  .horario th,.horario td{padding:12px 0;border-bottom:1px solid rgba(14,22,51,.15);font-weight:500;text-align:left}
+  .horario td{text-align:right;white-space:nowrap}
+  .visita-acciones{display:flex;flex-wrap:wrap;gap:12px}
+  .mapa{border-radius:6px;overflow:hidden;min-height:380px;background:var(--celeste)}
+  .mapa iframe{display:block;width:100%;height:100%;min-height:380px;border:0}
+
+  /* Pie */
+  .pie{background:var(--tinta);color:#fff;padding-block:64px 32px}
+  .pie-marca{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(52px,10vw,132px);line-height:.84;color:var(--amarillo);margin:0 0 36px}
+  .pie-fila{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:24px 48px;border-top:1px solid rgba(255,255,255,.2);padding-top:24px;font-size:15px}
+  .pie-nota{color:rgba(255,255,255,.72);max-width:52ch;margin:0}
+  .pie-redes{display:flex;flex-wrap:wrap;gap:20px}
+  .pie-redes a{text-underline-offset:4px}
+
+  /* WhatsApp flotante */
+  
+  .wa-flotante{position:fixed;right:20px;bottom:20px;z-index:40;width:60px;height:60px;border-radius:50%;background:var(--wa);color:#fff;border:0;display:grid;place-items:center;box-shadow:0 10px 24px rgba(14,22,51,.3);transition:transform .2s}
+  .wa-flotante:hover{transform:scale(1.07)}
+  .wa-flotante.oculto{opacity:0;pointer-events:none;transform:translateY(16px)}
+  .wa-flotante{transition:transform .2s,opacity .3s}
+
+  /* Ventana de demo */
+  dialog.demo{border:0;padding:0;border-radius:14px;width:min(92vw,460px);color:var(--tinta);background:#fff;box-shadow:0 30px 60px rgba(14,22,51,.35)}
+  dialog.demo[open]{animation:aparecer .25s cubic-bezier(.2,.8,.2,1)}
+  dialog.demo::backdrop{background:rgba(14,22,51,.6)}
+  @keyframes aparecer{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+  .demo-cabeza{background:var(--azul);color:#fff;padding:22px 24px 20px}
+  .demo-cabeza h2{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;margin:0}
+  .demo-cuerpo{padding:20px 24px 24px}
+  .demo-cuerpo p{margin:0 0 12px}
+  .burbuja{background:#DCF8C6;border-radius:14px 14px 14px 4px;padding:12px 14px;margin:4px 0 18px;font-size:15px}
+  .demo-pregunta{padding-top:14px;border-top:1px solid rgba(14,22,51,.12);font-weight:600}
+  .demo-acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+  .demo-acciones .btn{min-height:46px;padding:0 20px;font-size:15px}
+  .demo-correo{display:block;margin-top:14px;font-size:14px;color:rgba(14,22,51,.7)}
+
+  /* Responsive */
+  @media (max-width:960px){
+    .grilla{grid-template-columns:repeat(2,1fr)}
+    .marca-grid,.visita-grid{grid-template-columns:1fr}
+    .percha:nth-child(n+5){display:none}
+  }
+  @media (max-width:760px){
+    .menu-btn{display:inline-flex}
+    .nav{position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;align-items:stretch;gap:0;background:var(--blanco);color:var(--tinta);padding:4px 20px 20px;box-shadow:0 14px 24px rgba(14,22,51,.14)}
+    .nav.abierta{display:flex}
+    .nav a:not(.btn){padding:14px 0;border-bottom:1px solid rgba(14,22,51,.1)}
+    .nav a:not(.btn)::after{display:none}
+    .nav .btn-nav{margin-top:16px;min-height:48px;background:var(--tinta);color:#fff}
+  }
+  @media (max-width:640px){
+    .largo{display:none}
+    .corto{display:inline}
+    .percha:nth-child(n+4){display:none}
+    .hero{min-height:0}
+    .perchero{flex:none;height:calc(30vw * 1.23 + 20px);min-height:0}
+    .percha{width:30vw}
+    .hero-texto{padding-top:12px}
+    .demo-barra{font-size:13px}
+    .demo-links a{padding:3px 10px}
+    .producto-desc{min-height:0}
+    .hero-acciones{width:100%}
+    .hero-acciones .btn{flex:1 1 100%}
+  }
+  @media (max-width:560px){
+    .grilla{grid-template-columns:1fr}
+    .logo{font-size:22px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<!-- Barra de demo: No de la marca. Aquí me contactan. -->
+<div class="demo-barra" role="region" aria-label="Aviso de demo">
+  <div class="contenedor">
+    <p><span class="largo">Esta página es una demo hecha por <strong>Santiago</strong>. ¿Quieres una así para tu negocio?</span><span class="corto">Demo de <strong>Santiago</strong></span></p>
+    <div class="demo-links">
+      <a id="link-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <a id="link-gh" href="#" target="_blank" rel="noopener">GitHub</a>
+      <a id="link-ig" href="#" target="_blank" rel="noopener" hidden>Instagram</a>
+    </div>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="contenedor">
+    <a class="logo" href="#inicio">Santiago Prendas</a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menú</button>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#coleccion">Colección</a>
+      <a href="#marca">La marca</a>
+      <a href="#visitanos">Visítanos</a>
+      <a class="btn btn-nav" href="#" data-demo="whatsapp">Escríbenos</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="perchero" aria-hidden="true">
+      <div class="varilla"></div>
+      <div class="prendas" id="prendas"></div>
+    </div>
+    <div class="hero-texto contenedor">
+      <h1 class="marca-grande">Santiago Prendas</h1>
+      <div class="hero-fila">
+        <p>Ropa urbana hecha en Bucaramanga, pensada para caminar la ciudad con calor.</p>
+        <div class="hero-acciones">
+          <a class="btn btn-amarillo" href="#coleccion">Ver la colección</a>
+          <a class="btn btn-linea" href="#" data-demo="whatsapp">Pedir por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion" id="coleccion">
+    <div class="contenedor">
+      <div class="coleccion-cabeza">
+        <h2 class="titulo">Colección Chicamocha</h2>
+        <p>Seis referencias en tandas pequeñas. Elige tu talla, pide por WhatsApp y te confirmamos disponibilidad en minutos.</p>
+      </div>
+      <div class="filtros" role="group" aria-label="Filtrar por categoría">
+        <button class="filtro" type="button" data-cat="todo" aria-pressed="true">Todo</button>
+        <button class="filtro" type="button" data-cat="buzos" aria-pressed="false">Buzos</button>
+        <button class="filtro" type="button" data-cat="camisetas" aria-pressed="false">Camisetas</button>
+        <button class="filtro" type="button" data-cat="chaquetas" aria-pressed="false">Chaquetas</button>
+        <button class="filtro" type="button" data-cat="pantalones" aria-pressed="false">Pantalones</button>
+        <button class="filtro" type="button" data-cat="accesorios" aria-pressed="false">Accesorios</button>
+      </div>
+      <div class="grilla" id="grilla"></div>
+    </div>
+  </section>
+
+  <section class="seccion marca" id="marca">
+    <div class="contenedor marca-grid">
+      <h2 class="titulo">Hecha para el calor de Bucaramanga.</h2>
+      <div class="marca-texto">
+        <p>Diseñamos cada prenda pensando en el clima de la ciudad: algodón liviano, cortes amplios y colores que aguantan el sol.</p>
+        <p>Producimos en tandas pequeñas con talleres de Santander. Cuando una referencia se agota, puede que no vuelva.</p>
+        <ul class="garantias">
+          <li>Cambios hasta 30 días después de la compra, con la etiqueta puesta.</li>
+          <li>Envíos a todo el país en 2 a 5 días hábiles.</li>
+          <li>Pagas por Nequi, con tarjeta o contraentrega.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion" id="visitanos">
+    <div class="contenedor visita-grid">
+      <div>
+        <h2 class="titulo">Visítanos</h2>
+        <address class="direccion">Isla 12, primer piso<br>Centro Comercial Ejemplo<br>Bucaramanga, Santander</address>
+        <p class="estado" id="estado">Horario</p>
+        <table class="horario">
+          <caption class="sr-only">Horario de atención</caption>
+          <tr><th scope="row">Lunes a sábado</th><td>10:00 a. m. a 8:00 p. m.</td></tr>
+          <tr><th scope="row">Domingos y festivos</th><td>11:00 a. m. a 7:00 p. m.</td></tr>
+        </table>
+        <div class="visita-acciones">
+          <a class="btn btn-azul" href="#" data-demo="mapa">Cómo llegar</a>
+          <a class="btn btn-linea" href="#" data-demo="whatsapp">Escribir por WhatsApp</a>
+        </div>
+      </div>
+      <div class="mapa">
+        <iframe title="Mapa de Bucaramanga" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Bucaramanga%2C%20Santander&output=embed"></iframe>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p class="pie-marca" aria-hidden="true">Santiago Prendas</p>
+    <div class="pie-fila">
+      <p class="pie-nota">Santiago Prendas es una marca ficticia. Esta página es una demo de diseño y desarrollo web hecha por Santiago. © 2026</p>
+      <div class="pie-redes">
+        <a href="#" data-demo="instagram">Instagram</a>
+        <a href="#" data-demo="tiktok">TikTok</a>
+        <a id="pie-santiago" href="#" target="_blank" rel="noopener">Hablar con Santiago</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="wa-flotante oculto" type="button" data-demo="whatsapp" aria-label="Escribir por WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.5L3 21l2-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg>
+</button>
+
+<dialog class="demo" id="demo" aria-labelledby="demo-titulo">
+  <div class="demo-cabeza"><h2 id="demo-titulo">Esto es una demo</h2></div>
+  <div class="demo-cuerpo">
+    <p id="demo-texto"></p>
+    <div class="burbuja" id="demo-burbuja" hidden></div>
+    <p class="demo-pregunta">¿Quieres una página así para tu negocio?</p>
+    <div class="demo-acciones">
+      <a class="btn btn-tinta" id="demo-cta" href="#" target="_blank" rel="noopener">Escribirle a Santiago</a>
+      <button class="btn btn-linea" type="button" id="demo-cerrar">Seguir viendo</button>
+    </div>
+    <a class="demo-correo" id="demo-correo" href="#" hidden></a>
+  </div>
+</dialog>
+
+<script>
+/* Mis Datos */
+const CONTACTO = {
+  whatsapp: "573155140200",
+  github: "https://github.com/Santiago3336",
+  correo: "j.santisileon@gmail.com",
+  instagram: "https://instagram.com/jsantiagosleon"
+};
+
+
+/* Productos */
+
+const PRODUCTOS = [
+  { id:"buzo-chicamocha", art:"el", nombre:"Buzo Chicamocha", cat:"buzos", precio:139900,
+    desc:"Algodón perchado, capota doble y bolsillo canguro.", tipo:"buzo", color:"#C98A3A", fondo:"#E3E8FB",
+    tallas:["S","M","L","XL"], foto:"" },
+  { id:"camiseta-ciudad-bonita", art:"la", nombre:"Camiseta Ciudad Bonita", cat:"camisetas", precio:69900,
+    desc:"Algodón peinado de 180 g, corte amplio.", tipo:"camiseta", color:"#F5F6F8", fondo:"#1D3FD6",
+    tallas:["S","M","L","XL"], foto:"" },
+  { id:"chaqueta-cabecera", art:"la", nombre:"Chaqueta Cabecera", cat:"chaquetas", precio:189900,
+    desc:"Dril liviano con broches y dos bolsillos al pecho.", tipo:"chaqueta", color:"#2F6B4F", fondo:"#EFE3CE",
+    tallas:["S","M","L","XL"], foto:"" },
+  { id:"cargo-morrorrico", art:"el", nombre:"Cargo Morrorrico", cat:"pantalones", precio:149900,
+    desc:"Bota recta, seis bolsillos y tela que respira.", tipo:"pantalon", color:"#4B5A45", fondo:"#EFE3CE",
+    tallas:["28","30","32","34"], foto:"" },
+  { id:"gorra-santander", art:"la", nombre:"Gorra Santander", cat:"accesorios", precio:54900,
+    desc:"Seis paneles, visera curva y correa ajustable.", tipo:"gorra", color:"#E4432D", fondo:"#E3E8FB",
+    tallas:["Única"], foto:"" },
+  { id:"camiseta-parques", art:"la", nombre:"Camiseta Parques", cat:"camisetas", precio:64900,
+    desc:"Estampada a mano en serigrafía de un color.", tipo:"camiseta", color:"#FFCE2E", fondo:"#1D3FD6",
+    tallas:["S","M","L","XL"], foto:"" }
+];
+
+/* Prendas colgadas en la portada */
+const PERCHA = [
+  { tipo:"buzo", color:"#F5F6F8" },
+  { tipo:"camiseta", color:"#FFCE2E" },
+  { tipo:"chaqueta", color:"#2F6B4F" },
+  { tipo:"pantalon", color:"#D8B88A" },
+  { tipo:"camiseta", color:"#E4432D" }
+];
+
+/* ========================================================== */
+
+const $ = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const sinMovimiento = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const precio = n => "$" + n.toLocaleString("es-CO");
+
+/* Ilustraciones de prendas en SVG */
+const TRAZO = 'stroke="#0E1633" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"';
+const SOMBRA = 'fill="#0E1633" fill-opacity=".14"';
+const LETRA = 'font-family="Big Shoulders Display, Arial Narrow, Impact, sans-serif" font-weight="900"';
+
+function prenda(tipo, color){
+  switch (tipo){
+    case "camiseta": return `
+      <path ${TRAZO} fill="${color}" d="M72 28 C84 40 116 40 128 28 L156 38 L184 66 L162 92 L146 80 L146 182 L54 182 L54 80 L38 92 L16 66 L44 38 Z"/>
+      <path ${TRAZO} fill="none" d="M72 28 C82 46 118 46 128 28"/>
+      <text x="100" y="124" text-anchor="middle" ${LETRA} font-size="32" fill="#0E1633">SP</text>`;
+    case "buzo": return `
+      <path ${TRAZO} fill="${color}" d="M62 44 C54 4 146 4 138 44 C126 62 74 62 62 44 Z"/>
+      <path ${SOMBRA} d="M78 40 C84 18 116 18 122 40 C114 50 86 50 78 40 Z"/>
+      <path ${TRAZO} fill="${color}" d="M66 36 L40 46 C30 70 24 110 20 168 L42 172 L52 98 L54 98 L54 186 L146 186 L146 98 L148 98 L158 172 L180 168 C176 110 170 70 160 46 L134 36 C124 58 76 58 66 36 Z"/>
+      <path ${TRAZO} fill="none" d="M91 53 L89 84 M109 53 L111 84"/>
+      <path ${TRAZO} fill="#0E1633" fill-opacity=".12" d="M70 138 L130 138 L138 172 L62 172 Z"/>
+      <path ${TRAZO} fill="none" d="M54 176 L146 176 M22 158 L43 162 M178 158 L157 162"/>`;
+    case "chaqueta": return `
+      <path ${TRAZO} fill="${color}" d="M70 30 C84 22 116 22 130 30 L100 52 Z"/>
+      <path ${SOMBRA} d="M70 30 C84 22 116 22 130 30 L100 52 Z"/>
+      <path ${TRAZO} fill="${color}" d="M70 30 L44 40 C34 70 28 110 26 170 L48 172 L56 98 L58 98 L58 186 L142 186 L142 98 L144 98 L152 172 L174 170 C172 110 166 70 156 40 L130 30 L100 52 Z"/>
+      <path ${TRAZO} fill="none" d="M100 52 L100 186"/>
+      <path ${TRAZO} fill="${color}" d="M70 28 L100 52 L82 68 L64 34 Z"/>
+      <path ${TRAZO} fill="${color}" d="M130 28 L100 52 L118 68 L136 34 Z"/>
+      <path ${SOMBRA} d="M70 28 L100 52 L82 68 L64 34 Z M130 28 L100 52 L118 68 L136 34 Z"/>
+      <path ${TRAZO} fill="none" d="M64 90 H88 V112 H64 Z M112 90 H136 V112 H112 Z M64 97 H88 M112 97 H136"/>
+      <g fill="#0E1633"><circle cx="106" cy="80" r="3.2"/><circle cx="106" cy="112" r="3.2"/><circle cx="106" cy="144" r="3.2"/><circle cx="106" cy="174" r="3.2"/></g>`;
+    case "pantalon": return `
+      <path ${TRAZO} fill="${color}" d="M62 14 L138 14 L146 190 L110 190 L100 78 L90 190 L54 190 Z"/>
+      <path ${TRAZO} fill="${color}" d="M61 14 H139 L139.8 30 H60.2 Z"/>
+      <path ${SOMBRA} d="M61 14 H139 L139.8 30 H60.2 Z"/>
+      <path ${TRAZO} fill="none" d="M100 30 L100 70 M76 14 V30 M124 14 V30 M55 178 H90 M110 178 H145"/>
+      <path ${TRAZO} fill="${color}" d="M59 104 H82 V138 H57.5 Z M118 104 H141 L142.5 138 H118 Z"/>
+      <path ${SOMBRA} d="M59 104 H82 V111 H58.7 Z M118 104 H141 L141.3 111 H118 Z"/>`;
+    case "gorra": return `<g transform="translate(-6 16)">
+      <path ${TRAZO} fill="${color}" d="M34 130 C34 72 66 50 100 50 C136 50 166 72 166 130 Z"/>
+      <path ${TRAZO} fill="none" opacity=".55" d="M100 50 C92 78 90 104 92 130 M100 50 C124 74 134 100 136 130"/>
+      <path ${TRAZO} fill="${color}" d="M34 130 H166 L164 140 H36 Z"/>
+      <path ${SOMBRA} d="M34 130 H166 L164 140 H36 Z"/>
+      <path ${TRAZO} fill="${color}" d="M146 128 C170 121 194 123 202 132 C193 143 168 145 144 140 Z"/>
+      <path ${SOMBRA} d="M146 128 C170 121 194 123 202 132 C193 143 168 145 144 140 Z"/>
+      <circle ${TRAZO} fill="${color}" cx="100" cy="50" r="5"/>
+      <rect ${TRAZO} fill="#F5F6F8" x="104" y="84" width="40" height="26" rx="3"/>
+      <text x="124" y="104" text-anchor="middle" ${LETRA} font-size="18" fill="#0E1633">SP</text></g>`;
+  }
+  return "";
+}
+
+function gancho(tipo){
+  const g = 'fill="none" stroke="#0E1633" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"';
+  if (tipo === "pantalon"){
+    return `<g ${g}><path d="M100 -12 L100 -28 C100 -44 118 -44 118 -32"/><path d="M52 -2 H148 M100 -12 V-2"/><path d="M70 -2 V20 M130 -2 V20" stroke-width="6"/></g>`;
+  }
+  return `<g ${g}><path d="M100 -18 L100 -28 C100 -44 118 -44 118 -32"/><path d="M100 -18 L50 34 H150 Z"/></g>`;
+}
+
+/* Portada: perchero */
+$("#prendas").innerHTML = PERCHA.map((p, i) => {
+  const dibujo = p.tipo === "pantalon" ? prenda(p.tipo, p.color) + gancho(p.tipo) : gancho(p.tipo) + prenda(p.tipo, p.color);
+  return `<div class="percha" style="--d:${i * 110}ms"><div class="percha-giro mecer"><svg viewBox="0 -46 200 246">${dibujo}</svg></div></div>`;
+}).join("");
+
+$$(".percha").forEach(el => {
+  el.addEventListener("mouseenter", () => {
+    if (sinMovimiento) return;
+    const giro = el.firstElementChild;
+    giro.style.animationDelay = "0s";
+    giro.classList.remove("mecer");
+    void giro.offsetWidth;
+    giro.classList.add("mecer");
+  });
+});
+
+/* Colección */
+const ICONO_CHAT = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.5L3 21l2-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg>';
+const grilla = $("#grilla");
+
+grilla.innerHTML = PRODUCTOS.map((p, i) => {
+  const imagen = p.foto
+    ? `<img src="${p.foto}" alt="${p.nombre}" loading="lazy">`
+    : `<svg class="ilustracion" viewBox="0 0 200 200" role="img" aria-label="Ilustración de ${p.nombre}">${prenda(p.tipo, p.color)}</svg>`;
+  const porDefecto = p.tallas.length > 1 ? 1 : 0;
+  const tallas = p.tallas.map((t, j) =>
+    `<label class="talla"><input type="radio" name="talla-${p.id}" value="${t}" ${j === porDefecto ? "checked" : ""}><span>${t}</span></label>`
+  ).join("");
+  return `
+  <article class="producto" data-cat="${p.cat}" style="--c:${i % 3}">
+    <div class="panel" style="--fondo:${p.fondo}">
+      ${imagen}
+      <div class="etiqueta" aria-hidden="true">
+        <span class="cuerda"></span>
+        <span class="etiqueta-cuerpo">
+          <span class="etiqueta-nombre">${p.nombre}</span>
+          <span class="etiqueta-precio">${precio(p.precio)}</span>
+        </span>
+      </div>
+    </div>
+    <div class="producto-info">
+      <h3 class="sr-only">${p.nombre}, ${precio(p.precio)}</h3>
+      <p class="producto-desc">${p.desc}</p>
+      <div class="tallas" role="radiogroup" aria-label="Talla de ${p.nombre}">
+        <span class="tallas-label">Talla</span>${tallas}
+      </div>
+      <button class="btn btn-tinta pedir" type="button" data-id="${p.id}">${ICONO_CHAT} Pedir por WhatsApp</button>
+    </div>
+  </article>`;
+}).join("");
+
+/* Filtros */
+$$(".filtro").forEach(boton => {
+  boton.addEventListener("click", () => {
+    const cat = boton.dataset.cat;
+    $$(".filtro").forEach(b => b.setAttribute("aria-pressed", String(b === boton)));
+    $$(".producto").forEach(card => {
+      const mostrar = cat === "todo" || card.dataset.cat === cat;
+      card.hidden = !mostrar;
+      if (mostrar && !sinMovimiento){
+        card.classList.add("visible");
+        card.classList.remove("entra");
+        void card.offsetWidth;
+        card.classList.add("entra");
+      }
+    });
+  });
+});
+
+/* Aparición de la colección al llegar a ella */
+if (!sinMovimiento && "IntersectionObserver" in window){
+  grilla.classList.add("preparada");
+  const io = new IntersectionObserver(entradas => {
+    entradas.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add("visible");
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  $$(".producto").forEach(card => io.observe(card));
+}
+
+/* Ventana de demo */
+const dialogo = $("#demo");
+const DEMOS = {
+  whatsapp: {
+    titulo: "Así te escribirían",
+    texto: "En la página real de tu marca, este botón abre WhatsApp con un mensaje listo para enviar:",
+    mensaje: "Hola, vi su página y quiero información sobre las prendas."
+  },
+  mapa: {
+    titulo: "Cómo llegar",
+    texto: "En la página real, este botón abre Google Maps con la ruta hasta el local de la marca."
+  },
+  instagram: {
+    titulo: "Redes de la marca",
+    texto: "En la página real, este enlace lleva directo al Instagram de la marca."
+  },
+  tiktok: {
+    titulo: "Redes de la marca",
+    texto: "En la página real, este enlace lleva directo al TikTok de la marca."
+  }
+};
+
+function mostrarDemo({ titulo = "Esto es una demo", texto = "", mensaje = "" }){
+  $("#demo-titulo").textContent = titulo;
+  $("#demo-texto").textContent = texto;
+  const burbuja = $("#demo-burbuja");
+  burbuja.textContent = mensaje;
+  burbuja.hidden = !mensaje;
+  if (typeof dialogo.showModal === "function") dialogo.showModal();
+  else dialogo.setAttribute("open", "");
+}
+function cerrarDemo(){
+  if (typeof dialogo.close === "function") dialogo.close();
+  else dialogo.removeAttribute("open");
+}
+
+document.addEventListener("click", e => {
+  const disparador = e.target.closest("[data-demo]");
+  if (!disparador) return;
+  e.preventDefault();
+  cerrarMenu();
+  mostrarDemo(DEMOS[disparador.dataset.demo]);
+});
+
+grilla.addEventListener("click", e => {
+  const boton = e.target.closest(".pedir");
+  if (!boton) return;
+  const p = PRODUCTOS.find(x => x.id === boton.dataset.id);
+  const talla = $(`input[name="talla-${p.id}"]:checked`).value;
+  const tallaTexto = talla === "Única" ? "talla única" : `talla ${talla}`;
+  mostrarDemo({
+    titulo: "Así pediría tu cliente",
+    texto: "En la página real de tu marca, este botón abre WhatsApp con el pedido ya escrito:",
+    mensaje: `Hola, quiero ${p.art} ${p.nombre}, ${tallaTexto}. ¿Está disponible?`
+  });
+});
+
+$("#demo-cerrar").addEventListener("click", cerrarDemo);
+dialogo.addEventListener("click", e => { if (e.target === dialogo) cerrarDemo(); });
+
+/* Enlaces hacia Santiago */
+const waSantiago = `https://wa.me/${CONTACTO.whatsapp}?text=${encodeURIComponent("Hola Santiago, vi la demo de Santiago Prendas y quiero una página para mi negocio.")}`;
+$("#link-wa").href = waSantiago;
+$("#demo-cta").href = waSantiago;
+$("#pie-santiago").href = waSantiago;
+$("#link-gh").href = CONTACTO.github;
+if (CONTACTO.instagram){ $("#link-ig").href = CONTACTO.instagram; $("#link-ig").hidden = false; }
+if (CONTACTO.correo){
+  const c = $("#demo-correo");
+  c.href = `mailto:${CONTACTO.correo}`;
+  c.textContent = `O escríbele al correo: ${CONTACTO.correo}`;
+  c.hidden = false;
+}
+
+/* Cabecera y menú */
+const cabecera = $(".cabecera");
+const nav = $("#nav");
+const menuBtn = $(".menu-btn");
+const flotante = $(".wa-flotante");
+const alDesplazar = () => {
+  cabecera.classList.toggle("solida", window.scrollY > 40);
+  flotante.classList.toggle("oculto", window.scrollY < window.innerHeight * 0.6);
+};
+addEventListener("scroll", alDesplazar, { passive: true });
+alDesplazar();
+
+function cerrarMenu(){
+  nav.classList.remove("abierta");
+  cabecera.classList.remove("menu-abierto");
+  menuBtn.setAttribute("aria-expanded", "false");
+}
+menuBtn.addEventListener("click", () => {
+  const abierto = nav.classList.toggle("abierta");
+  cabecera.classList.toggle("menu-abierto", abierto);
+  menuBtn.setAttribute("aria-expanded", String(abierto));
+});
+$$(".nav a:not([data-demo])").forEach(a => a.addEventListener("click", cerrarMenu));
+
+/* Abierto o cerrado ahora */
+(function(){
+  const el = $("#estado");
+  const ahora = new Date();
+  const dia = ahora.getDay();
+  const hora = ahora.getHours() + ahora.getMinutes() / 60;
+  const horario = d => d === 0 ? [11, 19] : [10, 20];
+  const formato = h => h < 12 ? `${h}:00 a. m.` : `${h === 12 ? 12 : h - 12}:00 p. m.`;
+  const [abre, cierra] = horario(dia);
+  if (hora >= abre && hora < cierra){
+    el.textContent = `Abierto ahora. Cierra a las ${formato(cierra)}`;
+    el.classList.add("abierto");
+  } else {
+    const hoy = hora < abre;
+    const siguiente = hoy ? abre : horario((dia + 1) % 7)[0];
+    el.textContent = `Cerrado ahora. Abre ${hoy ? "hoy" : "mañana"} a las ${formato(siguiente)}`;
+    el.classList.add("cerrado");
+  }
+})();
+</script>
+</body>
+</html>
