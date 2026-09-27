@@ -2,7 +2,7 @@
 
 Demo de página web para una marca de ropa urbana. Santiago Prendas es una marca ficticia creada para mostrar el tipo de sitio que desarrollo para negocios locales.
 
-**Ver demo:** https://github.com/Santiago3336/Santiago_Clothes
+**Ver demo:** https://santiago3336.github.io/Santiago_Clothes/
 
 ![alt text](visual.png)
 
