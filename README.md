@@ -42,5 +42,5 @@ En la versión para un cliente, los botones de ejemplo se conectan al WhatsApp, 
 
 Desarrollado por Santiago.
 
-- GitHub: [TU-USUARIO](https://github.com/Santiago3336)
+- GitHub: [Santiago3336](https://github.com/Santiago3336)
 - ¿Quieres una página así para tu negocio? Escríbeme por [WhatsApp](https://wa.me/573155140200).
