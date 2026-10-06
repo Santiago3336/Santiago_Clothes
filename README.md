@@ -8,11 +8,11 @@ Demo de página web para una marca de ropa urbana. Santiago Prendas es una marca
 
 ## Qué incluye
 
-- Portada con ilustraciones animadas de prendas colgadas en un perchero.
-- Catálogo de productos con filtro por categoría y selector de talla.
+- Portada con ilustraciones animadas de prendas colgadas en un perchero que se mecen con el scroll y el toque.
+- Catálogo de productos con filtro por categoría (las prendas se "recuelgan" al filtrar) y selector de talla que sella la etiqueta.
 - Pedidos por WhatsApp con el mensaje ya escrito, incluyendo producto y talla.
-- Horario de atención que indica si el local está abierto o cerrado en tiempo real.
-- Mapa de ubicación integrado.
+- Horario de atención que indica si el local está abierto o cerrado en tiempo real (hora de Bogotá).
+- Mapa ilustrativo de ubicación, sin servicios de terceros (no carga Google Maps).
 - Diseño adaptable a celular, tableta y computador.
 - Accesibilidad básica: navegación con teclado, textos alternativos y respeto por la opción del sistema de reducir movimiento.
 

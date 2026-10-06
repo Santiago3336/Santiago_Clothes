@@ -1,0 +1,9 @@
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.log
+
+# Caché del revisor de diseño (impeccable)
+.impeccable/
