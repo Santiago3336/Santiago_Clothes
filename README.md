@@ -12,7 +12,7 @@ Demo de página web para una marca de ropa urbana. Santiago Prendas es una marca
 - Catálogo de productos con filtro por categoría (las prendas se "recuelgan" al filtrar) y selector de talla que sella la etiqueta.
 - Pedidos por WhatsApp con el mensaje ya escrito, incluyendo producto y talla.
 - Horario de atención que indica si el local está abierto o cerrado en tiempo real (hora de Bogotá).
-- Mapa ilustrativo de ubicación, sin servicios de terceros (no carga Google Maps). La dirección es un espacio reservado: en la demo no se usa ningún lugar real.
+- Mapa ilustrativo de ubicación y, si el visitante lo pide, el mapa real de Bucaramanga en Google Maps (no se carga nada de Google antes de ese clic). La dirección es un espacio reservado: en la demo no se usa ningún lugar real.
 - Lista «Prueba esta demo» que se marca al usar cada función, flota en una esquina y se acomoda en el bloque final al llegar a él.
 - Diseño adaptable a celular, tableta y computador.
 - Accesibilidad básica: navegación con teclado, textos alternativos y respeto por la opción del sistema de reducir movimiento.

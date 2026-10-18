@@ -209,6 +209,7 @@
   .mapa svg{flex:1 1 auto;width:100%;min-height:320px}
   .mapa-pie{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:12px 16px;background:#fff;font-size:14px;color:rgba(14,22,51,.78)}
   .mapa-pie .btn{min-height:44px;padding:0 18px;font-size:15px}
+  .mapa iframe{flex:1 1 auto;display:block;width:100%;min-height:320px;border:0}
   .mapa .pin{transform-box:fill-box;transform-origin:50% 100%}
   .mapa .pin-sombra{transform-box:fill-box;transform-origin:50% 50%}
   @media (prefers-reduced-motion:no-preference){
@@ -247,6 +248,10 @@
   .dock{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:var(--dock-b);z-index:45;width:min(300px,calc(100vw - 40px));background:var(--tinta);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:16px;box-shadow:0 18px 40px -16px rgba(14,22,51,.6)}
   :root{--dock-b:calc(max(20px,env(safe-area-inset-bottom,0px)) + 72px)}
   .dock:not(.abierto){width:auto}
+  @media (max-width:979px){
+    :root{--dock-b:max(20px,env(safe-area-inset-bottom,0px))}
+    .dock{right:auto;left:max(20px,env(safe-area-inset-left,0px));width:min(300px,calc(100vw - 112px))}
+  }
   .dock.fuera{opacity:0;visibility:hidden;transform:translateY(12px)}
   .dock-t{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:10px 14px;background:none;border:0;border-radius:16px;color:inherit;font-size:15px;font-weight:600;line-height:1.2;text-align:left}
   .dock-t span{flex:1}
@@ -487,7 +492,7 @@
           <ellipse class="pin-sombra" cx="396" cy="151" rx="13" ry="4.5" fill="#0E1633" fill-opacity=".28"/>
           <g class="pin"><path d="M396 150C396 150 377 132 377 120a19 19 0 0 1 38 0c0 12-19 30-19 30Z" fill="#1D3FD6" stroke="#0E1633" stroke-width="3" stroke-linejoin="round"/><circle cx="396" cy="120" r="6.5" fill="#FFCE2E" stroke="#0E1633" stroke-width="2"/></g>
         </svg>
-        <figcaption class="mapa-pie"><span>Mapa ilustrativo, no es un plano real.</span><a class="btn btn-tinta" href="#" data-demo="mapa">Abrir en Google Maps</a></figcaption>
+        <figcaption class="mapa-pie"><span id="mapa-nota">Mapa ilustrativo. El mapa real de Google se carga solo si lo pides.</span><button class="btn btn-tinta" type="button" id="mapa-real" hidden>Ver el mapa real de Bucaramanga</button></figcaption>
       </figure>
     </div>
   </section>
@@ -891,6 +896,22 @@ if (!sinMovimiento() && "IntersectionObserver" in window){
   const io = new IntersectionObserver(([e]) => { if (e.isIntersecting){ mapa.classList.add("en-vista"); io.disconnect(); } }, { threshold: .5 });
   io.observe(mapa);
 }
+
+/* Mapa real: el iframe de Google Maps solo se crea al pedirlo (sin él, Google no recibe nada ni deja cookies) */
+const verMapa = $("#mapa-real");
+verMapa.hidden = false;
+verMapa.addEventListener("click", () => {
+  const f = document.createElement("iframe");
+  f.title = "Mapa de Bucaramanga en Google Maps";
+  f.loading = "lazy"; f.referrerPolicy = "no-referrer-when-downgrade"; f.allowFullscreen = true;
+  f.src = "https://www.google.com/maps?q=Bucaramanga%2C%20Santander&hl=es&output=embed";
+  $(".mapa svg").replaceWith(f);
+  $("#mapa-nota").textContent = "Mapa de Google: Bucaramanga. En la página real aquí aparece tu local con su ubicación exacta.";
+  const a = document.createElement("a");                 // el botón se vuelve enlace al mapa completo; el foco no se pierde
+  a.className = "btn btn-tinta"; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Abrir en Google Maps";
+  a.href = "https://www.google.com/maps/search/?api=1&query=Bucaramanga%2C%20Santander";
+  verMapa.replaceWith(a); a.focus();
+}, { once: true });
 
 /* Abierto o cerrado ahora */
 (function(){
