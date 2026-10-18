@@ -8,6 +8,7 @@ Demo de página web para una marca de ropa urbana. Santiago Prendas es una marca
 
 ## Qué incluye
 
+- La página no es una sola columna larga: está dividida en planos (Inicio, Colección, La marca y Visítanos). Se ve uno a la vez y se pasa de uno a otro con un deslizamiento. Un menú flotante acompaña el recorrido, al lado contrario de la lista «Prueba esta demo»: muestra el plano actual, tiene una flecha al siguiente y despliega todos con una frase de qué hay en cada uno. Al final de cada plano, una tarjeta invita al siguiente. La dirección cambia con cada plano, así que el botón «atrás» funciona. Sin JavaScript, la página se ve completa en una sola columna.
 - Portada con ilustraciones animadas de prendas colgadas en un perchero que se mecen con el scroll y el toque.
 - Catálogo de productos con filtro por categoría (las prendas se "recuelgan" al filtrar) y selector de talla que sella la etiqueta.
 - Pedidos por WhatsApp con el mensaje ya escrito, incluyendo producto y talla.
